@@ -25,27 +25,31 @@ function newQuote() {
   //  Show Loader
   loading();
   // Pick a random quote form quote array
-  const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
+  const quote = apiQuotes.results[Math.floor(Math.random() * apiQuotes.count)];
+
   // Check if Author field is null and add "Unknown"
-  if (!quote.author) {
-    quoteAuthor.textContent = `- Unknown`;
-  } else {
-    quoteAuthor.textContent = `- ${quote.author}`;
-  }
+  // if (!quote.author) {
+  //   quoteAuthor.textContent = `- Unknown`;
+  // } else {
+  //   quoteAuthor.textContent = `- ${quote.author}`;
+  // }
+
+  quoteAuthor.textContent = `- ${quote.author}`;
+
   // Check Quote length to determine styling
-  if (quote.text.length > 100) {
+  if (quote.content.length > 100) {
     quoteText.classList.add("quote-text-long");
   } else {
     quoteText.classList.remove("quote-text-long");
   }
   // Set Quote and hide spinner
-  quoteText.textContent = quote.text;
+  quoteText.textContent = quote.content;
   complete();
 }
 // Fetch Quotes API
 async function getQuotes() {
   loading();
-  const apiUrl = "https://type.fit/api/quotes";
+  const apiUrl = "https://api.quotable.io/quotes?page=1";
   try {
     const res = await fetch(apiUrl);
     apiQuotes = await res.json();
